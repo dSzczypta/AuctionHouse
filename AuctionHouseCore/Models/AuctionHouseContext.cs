@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 
-
 namespace AuctionHouseCore.Models
 {
     public partial class AuctionHouseContext : DbContext
@@ -18,6 +17,7 @@ namespace AuctionHouseCore.Models
         {
         }
 
+        public virtual DbSet<AhPerson> AhPerson { get; set; }
         public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
@@ -41,6 +41,31 @@ namespace AuctionHouseCore.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
+
+            modelBuilder.Entity<AhPerson>(entity =>
+            {
+                entity.ToTable("AH_Person");
+
+                entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Adress).HasMaxLength(50);
+
+                entity.Property(e => e.AspNetUserId)
+                    .IsRequired()
+                    .HasMaxLength(450);
+
+                entity.Property(e => e.DateOfBirth).HasColumnType("datetime");
+
+                entity.Property(e => e.Name).HasMaxLength(50);
+
+                entity.Property(e => e.Surname).HasMaxLength(50);
+
+                entity.HasOne(d => d.AspNetUser)
+                    .WithMany(p => p.AhPerson)
+                    .HasForeignKey(d => d.AspNetUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("AspNetUserId");
+            });
 
             modelBuilder.Entity<AspNetRoleClaims>(entity =>
             {

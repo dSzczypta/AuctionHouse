@@ -20,7 +20,6 @@ namespace AuctionHouseCore.Services
             var person = await _context.AhPerson.Include(x=>x.AspNetUser).ToListAsync();
             foreach (var item in person)
             {
-                var x = item;
                 var newPerson = new Person()
                 {
                     Id = item.AspNetUser.Id,
@@ -32,10 +31,14 @@ namespace AuctionHouseCore.Services
                 };
                 complete.Add(newPerson);
             }
-            
             return complete;
         }
 
+        public async Task<AhPerson> GetPersonDetails(string id)
+        {
+            var person = await _context.AhPerson.Include(x => x.AspNetUser).FirstAsync(x => x.AspNetUser.Id == id);
+            return person;
+        }
 
     }
 }

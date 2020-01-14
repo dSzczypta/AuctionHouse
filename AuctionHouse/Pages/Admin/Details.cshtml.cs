@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
+using AuctionHouseCore.Services;
 using AuctionHouseCore.Models;
 
 namespace AuctionHouse.Pages.Admin
 {
     public class DetailsModel : PageModel
     {
-        private readonly AuctionHouseCore.Models.AuctionHouseContext _context;
+        private readonly IAdminPanel _adminPanel;
 
-        public DetailsModel(AuctionHouseCore.Models.AuctionHouseContext context)
+        public DetailsModel()
         {
-            _context = context;
+            _adminPanel = new AdminPanel();
         }
 
-        public AspNetUsers AspNetUsers { get; set; }
+        public AhPerson AspNetUsers { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -26,8 +23,7 @@ namespace AuctionHouse.Pages.Admin
             {
                 return NotFound();
             }
-
-            AspNetUsers = await _context.AspNetUsers.FirstOrDefaultAsync(m => m.Id == id);
+            AspNetUsers = await _adminPanel.GetPersonDetails(id); 
 
             if (AspNetUsers == null)
             {

@@ -1,6 +1,5 @@
-﻿using System;
+﻿using AuctionHouseCore.Models;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AuctionHouseCore.Services
@@ -8,5 +7,6 @@ namespace AuctionHouseCore.Services
     public interface IAdminPanel
     {
         Task<List<Person>> GetAllUsers();
+        Task<AhPerson> GetPersonDetails(string id);
     }
 }

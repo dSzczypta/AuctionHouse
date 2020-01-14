@@ -12,88 +12,118 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AspNetUsers.UserName)
+            @Html.DisplayNameFor(model => model.AspNetUsers.Id)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AspNetUsers.UserName)
+            @Html.DisplayFor(model => model.AspNetUsers.Id)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AspNetUsers.NormalizedUserName)
+            @Html.DisplayNameFor(model => model.AspNetUsers.Name)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AspNetUsers.NormalizedUserName)
+            @Html.DisplayFor(model => model.AspNetUsers.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AspNetUsers.Email)
+            @Html.DisplayNameFor(model => model.AspNetUsers.Surname)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AspNetUsers.Email)
+            @Html.DisplayFor(model => model.AspNetUsers.Surname)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AspNetUsers.NormalizedEmail)
+            @Html.DisplayNameFor(model => model.AspNetUsers.Adress)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AspNetUsers.NormalizedEmail)
+            @Html.DisplayFor(model => model.AspNetUsers.Adress)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AspNetUsers.EmailConfirmed)
+            @Html.DisplayNameFor(model => model.AspNetUsers.DateOfBirth)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AspNetUsers.EmailConfirmed)
+            @Html.DisplayFor(model => model.AspNetUsers.DateOfBirth)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AspNetUsers.PasswordHash)
+            @Html.DisplayNameFor(model => model.AspNetUsers.AspNetUser.UserName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AspNetUsers.PasswordHash)
+            @Html.DisplayFor(model => model.AspNetUsers.AspNetUser.UserName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AspNetUsers.SecurityStamp)
+            @Html.DisplayNameFor(model => model.AspNetUsers.AspNetUser.NormalizedUserName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AspNetUsers.SecurityStamp)
+            @Html.DisplayFor(model => model.AspNetUsers.AspNetUser.NormalizedUserName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AspNetUsers.ConcurrencyStamp)
+            @Html.DisplayNameFor(model => model.AspNetUsers.AspNetUser.Email)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AspNetUsers.ConcurrencyStamp)
+            @Html.DisplayFor(model => model.AspNetUsers.AspNetUser.Email)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AspNetUsers.PhoneNumber)
+            @Html.DisplayNameFor(model => model.AspNetUsers.AspNetUser.NormalizedEmail)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AspNetUsers.PhoneNumber)
+            @Html.DisplayFor(model => model.AspNetUsers.AspNetUser.NormalizedEmail)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AspNetUsers.PhoneNumberConfirmed)
+            @Html.DisplayNameFor(model => model.AspNetUsers.AspNetUser.EmailConfirmed)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AspNetUsers.PhoneNumberConfirmed)
+            @Html.DisplayFor(model => model.AspNetUsers.AspNetUser.EmailConfirmed)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AspNetUsers.TwoFactorEnabled)
+            @Html.DisplayNameFor(model => model.AspNetUsers.AspNetUser.PasswordHash)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AspNetUsers.TwoFactorEnabled)
+            @Html.DisplayFor(model => model.AspNetUsers.AspNetUser.PasswordHash)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AspNetUsers.LockoutEnd)
+            @Html.DisplayNameFor(model => model.AspNetUsers.AspNetUser.SecurityStamp)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AspNetUsers.LockoutEnd)
+            @Html.DisplayFor(model => model.AspNetUsers.AspNetUser.SecurityStamp)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AspNetUsers.LockoutEnabled)
+            @Html.DisplayNameFor(model => model.AspNetUsers.AspNetUser.ConcurrencyStamp)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AspNetUsers.LockoutEnabled)
+            @Html.DisplayFor(model => model.AspNetUsers.AspNetUser.ConcurrencyStamp)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AspNetUsers.AccessFailedCount)
+            @Html.DisplayNameFor(model => model.AspNetUsers.AspNetUser.PhoneNumber)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AspNetUsers.AccessFailedCount)
+            @Html.DisplayFor(model => model.AspNetUsers.AspNetUser.PhoneNumber)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AspNetUsers.AspNetUser.PhoneNumberConfirmed)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AspNetUsers.AspNetUser.PhoneNumberConfirmed)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AspNetUsers.AspNetUser.TwoFactorEnabled)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AspNetUsers.AspNetUser.TwoFactorEnabled)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AspNetUsers.AspNetUser.LockoutEnd)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AspNetUsers.AspNetUser.LockoutEnd)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AspNetUsers.AspNetUser.LockoutEnabled)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AspNetUsers.AspNetUser.LockoutEnabled)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AspNetUsers.AspNetUser.AccessFailedCount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AspNetUsers.AspNetUser.AccessFailedCount)
         </dd>
     </dl>
 </div>

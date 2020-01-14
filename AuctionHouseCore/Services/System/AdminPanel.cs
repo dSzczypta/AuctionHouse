@@ -55,5 +55,29 @@ namespace AuctionHouseCore.Services
                 
             }
         }
+
+        public async Task<bool> IsUserExist(string id) =>
+            await _context.AhPerson.AnyAsync(e => e.AspNetUserId == id);
+        
+        public async Task<bool> EditUser(AhPerson person)
+        {
+            _context.Attach(person).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
+
+
+
+
     }
 }

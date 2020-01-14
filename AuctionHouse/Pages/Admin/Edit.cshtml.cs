@@ -7,20 +7,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AuctionHouseCore.Models;
+using AuctionHouseCore.Services;
 
 namespace AuctionHouse.Pages.Admin
 {
     public class EditModel : PageModel
     {
-        private readonly AuctionHouseCore.Models.AuctionHouseContext _context;
+        private readonly IAdminPanel _adminPanel;
 
-        public EditModel(AuctionHouseCore.Models.AuctionHouseContext context)
+        public EditModel()
         {
-            _context = context;
+            _adminPanel = new AdminPanel();
         }
 
         [BindProperty]
-        public AspNetUsers AspNetUsers { get; set; }
+        public AhPerson AspNetUsers { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -29,7 +30,7 @@ namespace AuctionHouse.Pages.Admin
                 return NotFound();
             }
 
-            AspNetUsers = await _context.AspNetUsers.FirstOrDefaultAsync(m => m.Id == id);
+            AspNetUsers = await _adminPanel.GetPersonDetails(id);
 
             if (AspNetUsers == null)
             {
@@ -44,31 +45,11 @@ namespace AuctionHouse.Pages.Admin
             {
                 return Page();
             }
-
-            _context.Attach(AspNetUsers).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AspNetUsersExists(AspNetUsers.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            var result = await _adminPanel.EditUser(AspNetUsers);
+            if(!result)
+                return NotFound();
+           
             return RedirectToPage("./Index");
-        }
-
-        private bool AspNetUsersExists(string id)
-        {
-            return _context.AspNetUsers.Any(e => e.Id == id);
         }
     }
 }

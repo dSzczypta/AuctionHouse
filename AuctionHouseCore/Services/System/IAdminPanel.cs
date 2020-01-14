@@ -8,5 +8,6 @@ namespace AuctionHouseCore.Services
     {
         Task<List<Person>> GetAllUsers();
         Task<AhPerson> GetPersonDetails(string id);
+        Task DeletePerson(string id);
     }
 }

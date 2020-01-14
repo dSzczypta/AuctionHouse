@@ -1,5 +1,6 @@
 ﻿using AuctionHouseCore.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,11 +35,25 @@ namespace AuctionHouseCore.Services
             return complete;
         }
 
-        public async Task<AhPerson> GetPersonDetails(string id)
+        public async Task<AhPerson> GetPersonDetails(string id) => 
+            await _context.AhPerson.Include(x => x.AspNetUser).FirstAsync(x => x.AspNetUser.Id == id);
+        
+        public async Task DeletePerson(string id)
         {
-            var person = await _context.AhPerson.Include(x => x.AspNetUser).FirstAsync(x => x.AspNetUser.Id == id);
-            return person;
+            var user = await _context.AhPerson.FirstAsync(x=>x.AspNetUserId == id);
+            if (user != null)
+            {
+                try
+                {
+                    _context.AhPerson.Remove(user);
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception e)
+                {
+                    //log
+                }
+                
+            }
         }
-
     }
 }

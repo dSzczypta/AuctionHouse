@@ -63,7 +63,7 @@ namespace AuctionHouseCore.Models
                 entity.HasOne(d => d.AspNetUser)
                     .WithMany(p => p.AhPerson)
                     .HasForeignKey(d => d.AspNetUserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("AspNetUserId");
             });
 

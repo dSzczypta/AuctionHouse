@@ -6,20 +6,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AuctionHouseCore.Models;
+using AuctionHouseCore.Services;
 
 namespace AuctionHouse.Pages.Admin
 {
     public class DeleteModel : PageModel
     {
-        private readonly AuctionHouseCore.Models.AuctionHouseContext _context;
+        private readonly IAdminPanel _adminPanel;
 
-        public DeleteModel(AuctionHouseCore.Models.AuctionHouseContext context)
+        public DeleteModel()
         {
-            _context = context;
+            _adminPanel = new AdminPanel();
         }
 
         [BindProperty]
-        public AspNetUsers AspNetUsers { get; set; }
+        public AhPerson AspNetUsers { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -28,7 +29,7 @@ namespace AuctionHouse.Pages.Admin
                 return NotFound();
             }
 
-            AspNetUsers = await _context.AspNetUsers.FirstOrDefaultAsync(m => m.Id == id);
+            AspNetUsers = await _adminPanel.GetPersonDetails(id); 
 
             if (AspNetUsers == null)
             {
@@ -44,13 +45,7 @@ namespace AuctionHouse.Pages.Admin
                 return NotFound();
             }
 
-            AspNetUsers = await _context.AspNetUsers.FindAsync(id);
-
-            if (AspNetUsers != null)
-            {
-                _context.AspNetUsers.Remove(AspNetUsers);
-                await _context.SaveChangesAsync();
-            }
+            await _adminPanel.DeletePerson(id);
 
             return RedirectToPage("./Index");
         }

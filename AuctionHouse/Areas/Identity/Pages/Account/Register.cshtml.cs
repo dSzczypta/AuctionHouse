@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using AuctionHouseCore.Models;
+using AuctionHouseCore.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -34,6 +34,9 @@ namespace AuctionHouse.Areas.Identity.Pages.Account
 
         [BindProperty]
         public InputModel Input { get; set; }
+
+        [BindProperty]
+        public AhPerson _Person { get; set; }
 
         public string ReturnUrl { get; set; }
 
@@ -70,6 +73,7 @@ namespace AuctionHouse.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    await Person.CreateNewPerson(Input.Email, _Person);
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

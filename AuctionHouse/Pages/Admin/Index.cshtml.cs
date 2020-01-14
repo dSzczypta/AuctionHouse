@@ -6,23 +6,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AuctionHouseCore.Models;
+using AuctionHouseCore.Services;
 
 namespace AuctionHouse.Pages.Admin
 {
     public class IndexModel : PageModel
     {
-        private readonly AuctionHouseCore.Models.AuctionHouseContext _context;
-
-        public IndexModel(AuctionHouseCore.Models.AuctionHouseContext context)
+        IAdminPanel _adminPanel;
+        public IndexModel()
         {
-            _context = context;
+            _adminPanel = new AdminPanel();
         }
 
-        public IList<AspNetUsers> AspNetUsers { get;set; }
+        [BindProperty]
+        public IList<Person> Users { get;set; }
 
         public async Task OnGetAsync()
         {
-            AspNetUsers = await _context.AspNetUsers.ToListAsync();
+            Users = await _adminPanel.GetAllUsers();
         }
     }
 }

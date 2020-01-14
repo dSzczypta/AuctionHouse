@@ -31,9 +31,9 @@ namespace AuctionHouseCore.Models
             if (!optionsBuilder.IsConfigured)
             {
                 IConfigurationRoot configuration = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json")
-                    .Build();
+                       .SetBasePath(Directory.GetCurrentDirectory())
+                       .AddJsonFile("appsettings.json")
+                       .Build();
                 optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             }
         }
@@ -54,7 +54,7 @@ namespace AuctionHouseCore.Models
                     .IsRequired()
                     .HasMaxLength(450);
 
-                entity.Property(e => e.DateOfBirth).HasColumnType("datetime");
+                entity.Property(e => e.DateOfBirth).HasColumnType("date");
 
                 entity.Property(e => e.Name).HasMaxLength(50);
 

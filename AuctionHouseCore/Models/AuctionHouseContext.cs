@@ -17,7 +17,11 @@ namespace AuctionHouseCore.Models
         {
         }
 
+        public virtual DbSet<AhAuctions> AhAuctions { get; set; }
+        public virtual DbSet<AhObjectToSell> AhObjectToSell { get; set; }
+        public virtual DbSet<AhPaymentMethod> AhPaymentMethod { get; set; }
         public virtual DbSet<AhPerson> AhPerson { get; set; }
+        public virtual DbSet<AhShipmentType> AhShipmentType { get; set; }
         public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
@@ -42,6 +46,73 @@ namespace AuctionHouseCore.Models
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
 
+            modelBuilder.Entity<AhAuctions>(entity =>
+            {
+                entity.ToTable("AH_Auctions");
+
+                entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.UserName)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.ObjectNavigation)
+                    .WithMany(p => p.AhAuctions)
+                    .HasForeignKey(d => d.ObjectId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK__AH_Auctio__Objec__2FCF1A8A");
+
+                entity.HasOne(d => d.PaymentMethodNavigation)
+                    .WithMany(p => p.AhAuctions)
+                    .HasForeignKey(d => d.PaymentMethod)
+                    .HasConstraintName("FK__AH_Auctio__Payme__30C33EC3");
+
+                entity.HasOne(d => d.ShipmentTypeNavigation)
+                    .WithMany(p => p.AhAuctions)
+                    .HasForeignKey(d => d.ShipmentType)
+                    .HasConstraintName("FK__AH_Auctio__Shipm__31B762FC");
+            });
+
+            modelBuilder.Entity<AhObjectToSell>(entity =>
+            {
+                entity.ToTable("AH_ObjectToSell");
+
+                entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.AddedBy)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DateAdded).HasColumnType("datetime");
+
+                entity.Property(e => e.Description)
+                    .IsRequired()
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
+            });
+
+            modelBuilder.Entity<AhPaymentMethod>(entity =>
+            {
+                entity.ToTable("AH_PaymentMethod");
+
+                entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<AhPerson>(entity =>
             {
                 entity.ToTable("AH_Person");
@@ -65,6 +136,25 @@ namespace AuctionHouseCore.Models
                     .HasForeignKey(d => d.AspNetUserId)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("AspNetUserId");
+            });
+
+            modelBuilder.Entity<AhShipmentType>(entity =>
+            {
+                entity.ToTable("AH_ShipmentType");
+
+                entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.Time)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<AspNetRoleClaims>(entity =>

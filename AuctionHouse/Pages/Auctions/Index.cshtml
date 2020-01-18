@@ -1,0 +1,66 @@
+﻿@page
+@model AuctionHouse.Pages.Auctions.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AhAuctions[0].UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AhAuctions[0].Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AhAuctions[0].IsConfirmed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AhAuctions[0].ObjectNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AhAuctions[0].PaymentMethodNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AhAuctions[0].ShipmentTypeNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.AhAuctions) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsConfirmed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ObjectNavigation.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentMethodNavigation.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShipmentTypeNavigation.Name)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

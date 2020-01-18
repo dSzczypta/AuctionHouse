@@ -1,0 +1,60 @@
+﻿@page
+@model AuctionHouse.Pages.ObjectToSell.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>AhObjectToSell</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="AhObjectToSell.Id" />
+            <div class="form-group">
+                <label asp-for="AhObjectToSell.Name" class="control-label"></label>
+                <input asp-for="AhObjectToSell.Name" class="form-control" />
+                <span asp-validation-for="AhObjectToSell.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AhObjectToSell.Description" class="control-label"></label>
+                <input asp-for="AhObjectToSell.Description" class="form-control" />
+                <span asp-validation-for="AhObjectToSell.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AhObjectToSell.Price" class="control-label"></label>
+                <input asp-for="AhObjectToSell.Price" class="form-control" />
+                <span asp-validation-for="AhObjectToSell.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AhObjectToSell.AddedBy" class="control-label"></label>
+                <input asp-for="AhObjectToSell.AddedBy" class="form-control" />
+                <span asp-validation-for="AhObjectToSell.AddedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="AhObjectToSell.Sold" /> @Html.DisplayNameFor(model => model.AhObjectToSell.Sold)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="AhObjectToSell.DateAdded" class="control-label"></label>
+                <input asp-for="AhObjectToSell.DateAdded" class="form-control" />
+                <span asp-validation-for="AhObjectToSell.DateAdded" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

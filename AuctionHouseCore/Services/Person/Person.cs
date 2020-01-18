@@ -27,7 +27,7 @@ namespace AuctionHouseCore.Services
                     ctx.AhPerson.Add(person);
                     await ctx.SaveChangesAsync();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     //logowanie błędów;
                 }

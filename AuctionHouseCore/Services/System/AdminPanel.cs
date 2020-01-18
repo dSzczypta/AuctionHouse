@@ -48,7 +48,7 @@ namespace AuctionHouseCore.Services
                     _context.AhPerson.Remove(user);
                     await _context.SaveChangesAsync();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     //log
                 }

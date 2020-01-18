@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AuctionHouseCore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using AuctionHouseCore.Models;
 
-namespace AuctionHouse.Pages
+namespace AuctionHouse.Pages.Auctions
 {
     public class IndexModel : PageModel
     {
-
         private readonly AuctionHouseCore.Models.AuctionHouseContext _context;
 
         public IndexModel(AuctionHouseCore.Models.AuctionHouseContext context)
@@ -19,14 +18,14 @@ namespace AuctionHouse.Pages
             _context = context;
         }
 
-        public IList<AhObjectToSell> AhObjectToSell { get; set; }
+        public IList<AhAuctions> AhAuctions { get;set; }
 
         public async Task OnGetAsync()
         {
-            AhObjectToSell = await _context.AhObjectToSell.ToListAsync();
+            AhAuctions = await _context.AhAuctions
+                .Include(a => a.ObjectNavigation)
+                .Include(a => a.PaymentMethodNavigation)
+                .Include(a => a.ShipmentTypeNavigation).ToListAsync();
         }
-
-
-
     }
 }

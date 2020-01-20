@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="AhObjectToSell.Name" class="control-label"></label>
@@ -28,21 +28,27 @@
                 <input asp-for="AhObjectToSell.Price" class="form-control" />
                 <span asp-validation-for="AhObjectToSell.Price" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Image</label>
+                <div class="col-md-10">
+                    <input asp-for="Image" type="file"/>
+                </div>
+            </div>
             @*<div class="form-group">
-                <label asp-for="AhObjectToSell.AddedBy" class="control-label"></label>
-                <input asp-for="AhObjectToSell.AddedBy" class="form-control" />
-                <span asp-validation-for="AhObjectToSell.AddedBy" class="text-danger"></span>
-            </div>*@
+            <label asp-for="AhObjectToSell.AddedBy" class="control-label"></label>
+            <input asp-for="AhObjectToSell.AddedBy" class="form-control" />
+            <span asp-validation-for="AhObjectToSell.AddedBy" class="text-danger"></span>
+        </div>*@
             @*<div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="AhObjectToSell.Sold" /> @Html.DisplayNameFor(model => model.AhObjectToSell.Sold))
-                </label>
-            </div>*@
+            <label class="form-check-label">
+                <input class="form-check-input" asp-for="AhObjectToSell.Sold" /> @Html.DisplayNameFor(model => model.AhObjectToSell.Sold))
+            </label>
+        </div>*@
             @*<div class="form-group">
-                <label asp-for="AhObjectToSell.DateAdded" class="control-label"></label>
-                <input asp-for="AhObjectToSell.DateAdded" class="form-control" />
-                <span asp-validation-for="AhObjectToSell.DateAdded" class="text-danger"></span>
-            </div>*@
+            <label asp-for="AhObjectToSell.DateAdded" class="control-label"></label>
+            <input asp-for="AhObjectToSell.DateAdded" class="form-control" />
+            <span asp-validation-for="AhObjectToSell.DateAdded" class="text-danger"></span>
+        </div>*@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

@@ -1,7 +1,9 @@
 ﻿using AuctionHouseCore.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -14,20 +16,25 @@ namespace AuctionHouseCore.Services
     {
         private readonly AuctionHouseContext _context;
 
+
         public Objects()
         {
             _context = new AuctionHouseContext();
-        }
+    }
 
-        public async Task AddNewObject(AhObjectToSell obj, string userName)
+        public async Task<string> AddNewObject(AhObjectToSell obj, string userName)
         {
+            var id = Guid.NewGuid();
             try
             {
+                obj.Id = id;
+                obj.ImagePath = id.ToString() + ".jpg";
                 obj.AddedBy = userName;
                 obj.DateAdded = DateTime.Now;
                 obj.AddedBy = WindowsIdentity.GetCurrent().Name;
                 _context.AhObjectToSell.Add(obj);
                 await _context.SaveChangesAsync();
+                return id.ToString();
             }
             catch (Exception e)
             {
@@ -71,7 +78,23 @@ namespace AuctionHouseCore.Services
         }
 
         public async Task<List<AhObjectToSell>> GetObjects() =>
-            await _context.AhObjectToSell.Where(x=>x.Sold == false).ToListAsync();
+            await _context.AhObjectToSell.Where(x => x.Sold == false).ToListAsync();
+
+        public async Task SaveImage(IFormFile file, string path)
+        {
+            try
+            {
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
+        }
 
 
     }

@@ -93,6 +93,10 @@ namespace AuctionHouseCore.Models
                     .IsRequired()
                     .IsUnicode(false);
 
+                entity.Property(e => e.ImagePath)
+                    .HasMaxLength(400)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(100)

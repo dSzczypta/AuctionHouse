@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using AuctionHouseCore.Models;
 using AuctionHouseCore.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace AuctionHouse.Pages.ObjectToSell
 {
@@ -11,11 +13,13 @@ namespace AuctionHouse.Pages.ObjectToSell
     {
         private readonly IObjects _objectToSell;
         private string user;
+        private IHostingEnvironment _environment;
 
-        public CreateModel(IHttpContextAccessor _httpContextAccessor)
+        public CreateModel(IHttpContextAccessor _httpContextAccessor, IHostingEnvironment environment)
         {
             user = _httpContextAccessor.HttpContext.User.Identity.Name;
             _objectToSell = new Objects();
+            _environment = environment;
         } 
 
         public IActionResult OnGet()
@@ -25,6 +29,8 @@ namespace AuctionHouse.Pages.ObjectToSell
 
         [BindProperty]
         public AhObjectToSell AhObjectToSell { get; set; }
+        [BindProperty]
+        public IFormFile Image { set; get; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -32,7 +38,15 @@ namespace AuctionHouse.Pages.ObjectToSell
             {
                 return Page();
             }
-            await _objectToSell.AddNewObject(AhObjectToSell, user);
+
+            if (!Image.FileName.Contains(".jpg"))
+                return Page();
+
+            var id = await _objectToSell.AddNewObject(AhObjectToSell, user);
+
+            var path = Path.Combine(_environment.ContentRootPath, @"wwwroot\uploads", id + ".jpg");
+            await _objectToSell.SaveImage(Image, path);
+
             return RedirectToPage("../Index");
         }
     }

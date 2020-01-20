@@ -11,6 +11,9 @@
     <thead>
         <tr>
             <th>
+                Picture
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.AhAuctions[0].IsConfirmed)
             </th>
             <th>
@@ -35,6 +38,9 @@
         @foreach (var item in Model.AhAuctions)
         {
             <tr>
+                <td>
+                    <img src="~/uploads/@item.ObjectNavigation.ImagePath" width="200" height="200">
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.IsConfirmed)
                 </td>

@@ -17,6 +17,7 @@ namespace AuctionHouseCore.Models
         public string AddedBy { get; set; }
         public bool Sold { get; set; }
         public DateTime DateAdded { get; set; }
+        public string ImagePath { get; set; }
 
         public virtual ICollection<AhAuctions> AhAuctions { get; set; }
     }

@@ -6,16 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AuctionHouseCore.Models;
+using AuctionHouseCore.Services;
 
 namespace AuctionHouse.Pages.PaymentMethod
 {
     public class CreateModel : PageModel
     {
-        private readonly AuctionHouseCore.Models.AuctionHouseContext _context;
+        private readonly IPaymentMethodManager _paymentMethod;
 
-        public CreateModel(AuctionHouseCore.Models.AuctionHouseContext context)
+        public CreateModel()
         {
-            _context = context;
+            _paymentMethod = new PaymentMethodManager();
         }
 
         public IActionResult OnGet()
@@ -33,8 +34,7 @@ namespace AuctionHouse.Pages.PaymentMethod
                 return Page();
             }
 
-            _context.AhPaymentMethod.Add(AhPaymentMethod);
-            await _context.SaveChangesAsync();
+            await _paymentMethod.AddPaymentMethod(AhPaymentMethod);
 
             return RedirectToPage("./Index");
         }

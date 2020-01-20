@@ -6,16 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AuctionHouseCore.Models;
+using AuctionHouseCore.Services;
 
 namespace AuctionHouse.Pages.PaymentMethod
 {
     public class DeleteModel : PageModel
     {
-        private readonly AuctionHouseCore.Models.AuctionHouseContext _context;
+        private readonly IPaymentMethodManager _paymentMethod;
 
-        public DeleteModel(AuctionHouseCore.Models.AuctionHouseContext context)
+        public DeleteModel()
         {
-            _context = context;
+            _paymentMethod = new PaymentMethodManager();
         }
 
         [BindProperty]
@@ -28,7 +29,7 @@ namespace AuctionHouse.Pages.PaymentMethod
                 return NotFound();
             }
 
-            AhPaymentMethod = await _context.AhPaymentMethod.FirstOrDefaultAsync(m => m.Id == id);
+            AhPaymentMethod = await _paymentMethod.GetPaymentMethod(id);
 
             if (AhPaymentMethod == null)
             {
@@ -39,19 +40,7 @@ namespace AuctionHouse.Pages.PaymentMethod
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            AhPaymentMethod = await _context.AhPaymentMethod.FindAsync(id);
-
-            if (AhPaymentMethod != null)
-            {
-                _context.AhPaymentMethod.Remove(AhPaymentMethod);
-                await _context.SaveChangesAsync();
-            }
-
+            await _paymentMethod.DeletePaymentMethod(id);
             return RedirectToPage("./Index");
         }
     }

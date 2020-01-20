@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AuctionHouseCore.Models;
+using AuctionHouseCore.Services;
 
 namespace AuctionHouse.Pages.PaymentMethod
 {
     public class IndexModel : PageModel
     {
-        private readonly AuctionHouseCore.Models.AuctionHouseContext _context;
+        private readonly IPaymentMethodManager _paymentMethod;
 
-        public IndexModel(AuctionHouseCore.Models.AuctionHouseContext context)
+        public IndexModel()
         {
-            _context = context;
+            _paymentMethod = new PaymentMethodManager();
         }
 
         public IList<AhPaymentMethod> AhPaymentMethod { get;set; }
 
         public async Task OnGetAsync()
         {
-            AhPaymentMethod = await _context.AhPaymentMethod.ToListAsync();
+            AhPaymentMethod = await _paymentMethod.GetPaymentMethod();
         }
+
+
     }
 }

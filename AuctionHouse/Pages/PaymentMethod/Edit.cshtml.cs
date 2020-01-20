@@ -7,16 +7,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AuctionHouseCore.Models;
+using AuctionHouseCore.Services;
 
 namespace AuctionHouse.Pages.PaymentMethod
 {
     public class EditModel : PageModel
     {
-        private readonly AuctionHouseCore.Models.AuctionHouseContext _context;
+        private readonly IPaymentMethodManager _paymentMethod;
 
-        public EditModel(AuctionHouseCore.Models.AuctionHouseContext context)
+        public EditModel()
         {
-            _context = context;
+            _paymentMethod = new PaymentMethodManager();
         }
 
         [BindProperty]
@@ -29,7 +30,7 @@ namespace AuctionHouse.Pages.PaymentMethod
                 return NotFound();
             }
 
-            AhPaymentMethod = await _context.AhPaymentMethod.FirstOrDefaultAsync(m => m.Id == id);
+            AhPaymentMethod = await _paymentMethod.GetPaymentMethod(id);
 
             if (AhPaymentMethod == null)
             {
@@ -45,15 +46,13 @@ namespace AuctionHouse.Pages.PaymentMethod
                 return Page();
             }
 
-            _context.Attach(AhPaymentMethod).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _paymentMethod.EditPayment(AhPaymentMethod);
             }
-            catch (DbUpdateConcurrencyException)
+            catch
             {
-                if (!AhPaymentMethodExists(AhPaymentMethod.Id))
+                if (!_paymentMethod.AhPaymentMethodExists(AhPaymentMethod.Id))
                 {
                     return NotFound();
                 }
@@ -64,11 +63,6 @@ namespace AuctionHouse.Pages.PaymentMethod
             }
 
             return RedirectToPage("./Index");
-        }
-
-        private bool AhPaymentMethodExists(Guid id)
-        {
-            return _context.AhPaymentMethod.Any(e => e.Id == id);
         }
     }
 }

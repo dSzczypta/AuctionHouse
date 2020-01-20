@@ -31,7 +31,6 @@ namespace AuctionHouseCore.Services
                 obj.ImagePath = id.ToString() + ".jpg";
                 obj.AddedBy = userName;
                 obj.DateAdded = DateTime.Now;
-                obj.AddedBy = WindowsIdentity.GetCurrent().Name;
                 _context.AhObjectToSell.Add(obj);
                 await _context.SaveChangesAsync();
                 return id.ToString();

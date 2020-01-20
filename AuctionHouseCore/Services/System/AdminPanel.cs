@@ -1,4 +1,5 @@
 ﻿using AuctionHouseCore.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace AuctionHouseCore.Services
         public async Task<List<Person>> GetAllUsers()
         {
             var complete = new List<Person>();
-            var person = await _context.AhPerson.Include(x=>x.AspNetUser).ToListAsync();
+            var person = await _context.AhPerson.Include(x => x.AspNetUser).ToListAsync();
             foreach (var item in person)
             {
                 var newPerson = new Person()
@@ -35,12 +36,12 @@ namespace AuctionHouseCore.Services
             return complete;
         }
 
-        public async Task<AhPerson> GetPersonDetails(string id) => 
+        public async Task<AhPerson> GetPersonDetails(string id) =>
             await _context.AhPerson.Include(x => x.AspNetUser).FirstAsync(x => x.AspNetUser.Id == id);
-        
+
         public async Task DeletePerson(string id)
         {
-            var user = await _context.AhPerson.FirstAsync(x=>x.AspNetUserId == id);
+            var user = await _context.AhPerson.FirstAsync(x => x.AspNetUserId == id);
             if (user != null)
             {
                 try
@@ -52,13 +53,13 @@ namespace AuctionHouseCore.Services
                 {
                     //log
                 }
-                
+
             }
         }
 
         public async Task<bool> IsUserExist(string id) =>
             await _context.AhPerson.AnyAsync(e => e.AspNetUserId == id);
-        
+
         public async Task<bool> EditUser(AhPerson person)
         {
             _context.Attach(person).State = EntityState.Modified;
@@ -74,10 +75,22 @@ namespace AuctionHouseCore.Services
             }
         }
 
+        public static async Task<string> GetTypeOfUser(string username)
+        {
+            try
+            {
+                using (var ctx = new AuctionHouseContext())
+                {
+                    var user = ctx.AspNetUsers.First(x => x.Email == username);
+                    return ctx.AspNetUserRoles.First(x => x.UserId == user.Id).RoleId;
+                }
+            }
+            catch (Exception)
+            {
 
+                return "3";
+            }
 
-
-
-
+        }
     }
 }

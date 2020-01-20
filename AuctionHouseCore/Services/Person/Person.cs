@@ -32,6 +32,14 @@ namespace AuctionHouseCore.Services
                     var aspNetUserID = ctx.AspNetUsers.First(x => x.Email == email).Id;
                     person.AspNetUserId = aspNetUserID;
                     ctx.AhPerson.Add(person);
+
+                    var role = new AspNetUserRoles
+                    {
+                        UserId = aspNetUserID,
+                        RoleId = "2"
+                    };
+                    ctx.AspNetUserRoles.Add(role);
+
                     await ctx.SaveChangesAsync();
                 }
                 catch (Exception)

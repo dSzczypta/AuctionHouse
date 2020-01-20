@@ -81,7 +81,7 @@ namespace AuctionHouseCore.Services
             {
                 using (var ctx = new AuctionHouseContext())
                 {
-                    var user = ctx.AspNetUsers.First(x => x.Email == username);
+                    var user = await ctx.AspNetUsers.FirstAsync(x => x.Email == username);
                     return ctx.AspNetUserRoles.First(x => x.UserId == user.Id).RoleId;
                 }
             }

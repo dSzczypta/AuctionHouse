@@ -6,23 +6,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AuctionHouseCore.Models;
+using AuctionHouseCore.Services;
 
 namespace AuctionHouse.Pages.ShipmentType
 {
     public class IndexModel : PageModel
     {
-        private readonly AuctionHouseCore.Models.AuctionHouseContext _context;
+        private readonly IShipmentTypeManager _shipmentTypeManager;
 
-        public IndexModel(AuctionHouseCore.Models.AuctionHouseContext context)
+        public IndexModel()
         {
-            _context = context;
+            _shipmentTypeManager = new ShipmentTypeManager();
         }
 
         public IList<AhShipmentType> AhShipmentType { get;set; }
 
         public async Task OnGetAsync()
         {
-            AhShipmentType = await _context.AhShipmentType.ToListAsync();
+            AhShipmentType = await _shipmentTypeManager.GetShipmentType();
         }
     }
 }

@@ -6,16 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AuctionHouseCore.Models;
+using AuctionHouseCore.Services;
 
 namespace AuctionHouse.Pages.ShipmentType
 {
     public class DeleteModel : PageModel
     {
-        private readonly AuctionHouseCore.Models.AuctionHouseContext _context;
+        private readonly IShipmentTypeManager _shipmentTypeManager;
 
-        public DeleteModel(AuctionHouseCore.Models.AuctionHouseContext context)
+        public DeleteModel()
         {
-            _context = context;
+            _shipmentTypeManager = new ShipmentTypeManager();
         }
 
         [BindProperty]
@@ -28,7 +29,7 @@ namespace AuctionHouse.Pages.ShipmentType
                 return NotFound();
             }
 
-            AhShipmentType = await _context.AhShipmentType.FirstOrDefaultAsync(m => m.Id == id);
+            AhShipmentType = await _shipmentTypeManager.GetShipmentType(id);
 
             if (AhShipmentType == null)
             {
@@ -44,13 +45,7 @@ namespace AuctionHouse.Pages.ShipmentType
                 return NotFound();
             }
 
-            AhShipmentType = await _context.AhShipmentType.FindAsync(id);
-
-            if (AhShipmentType != null)
-            {
-                _context.AhShipmentType.Remove(AhShipmentType);
-                await _context.SaveChangesAsync();
-            }
+            await _shipmentTypeManager.DeleteShipmentType(id);
 
             return RedirectToPage("./Index");
         }

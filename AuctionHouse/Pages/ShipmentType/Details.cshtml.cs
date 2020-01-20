@@ -6,16 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AuctionHouseCore.Models;
+using AuctionHouseCore.Services;
 
 namespace AuctionHouse.Pages.ShipmentType
 {
     public class DetailsModel : PageModel
     {
-        private readonly AuctionHouseCore.Models.AuctionHouseContext _context;
+        private readonly IShipmentTypeManager _shipmentTypeManager;
 
-        public DetailsModel(AuctionHouseCore.Models.AuctionHouseContext context)
+        public DetailsModel()
         {
-            _context = context;
+            _shipmentTypeManager = new ShipmentTypeManager();
         }
 
         public AhShipmentType AhShipmentType { get; set; }
@@ -27,7 +28,7 @@ namespace AuctionHouse.Pages.ShipmentType
                 return NotFound();
             }
 
-            AhShipmentType = await _context.AhShipmentType.FirstOrDefaultAsync(m => m.Id == id);
+            AhShipmentType = await _shipmentTypeManager.GetShipmentType(id);
 
             if (AhShipmentType == null)
             {

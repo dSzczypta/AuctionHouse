@@ -1,22 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AuctionHouseCore.Models;
+using AuctionHouseCore.Services;
 
 namespace AuctionHouse.Pages.ShipmentType
 {
     public class EditModel : PageModel
     {
-        private readonly AuctionHouseCore.Models.AuctionHouseContext _context;
-
-        public EditModel(AuctionHouseCore.Models.AuctionHouseContext context)
+        private readonly IShipmentTypeManager _shipmentTypeManager;
+        public EditModel()
         {
-            _context = context;
+            _shipmentTypeManager = new ShipmentTypeManager();
         }
 
         [BindProperty]
@@ -29,7 +26,7 @@ namespace AuctionHouse.Pages.ShipmentType
                 return NotFound();
             }
 
-            AhShipmentType = await _context.AhShipmentType.FirstOrDefaultAsync(m => m.Id == id);
+            AhShipmentType = await _shipmentTypeManager.GetShipmentType(id);
 
             if (AhShipmentType == null)
             {
@@ -45,15 +42,13 @@ namespace AuctionHouse.Pages.ShipmentType
                 return Page();
             }
 
-            _context.Attach(AhShipmentType).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _shipmentTypeManager.EditShipmentType(AhShipmentType);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AhShipmentTypeExists(AhShipmentType.Id))
+                if (! _shipmentTypeManager.AhShipmentTypeExists(AhShipmentType.Id))
                 {
                     return NotFound();
                 }
@@ -64,11 +59,6 @@ namespace AuctionHouse.Pages.ShipmentType
             }
 
             return RedirectToPage("./Index");
-        }
-
-        private bool AhShipmentTypeExists(Guid id)
-        {
-            return _context.AhShipmentType.Any(e => e.Id == id);
         }
     }
 }

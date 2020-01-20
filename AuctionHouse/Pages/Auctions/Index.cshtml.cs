@@ -6,26 +6,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AuctionHouseCore.Models;
+using AuctionHouseCore.Services;
 
 namespace AuctionHouse.Pages.Auctions
 {
     public class IndexModel : PageModel
     {
-        private readonly AuctionHouseCore.Models.AuctionHouseContext _context;
+        private IAuctions _auctions;
 
-        public IndexModel(AuctionHouseCore.Models.AuctionHouseContext context)
+        public IndexModel()
         {
-            _context = context;
+            _auctions = new AuctionHouseCore.Services.Auctions();
         }
 
+        [BindProperty]
         public IList<AhAuctions> AhAuctions { get;set; }
+        
 
         public async Task OnGetAsync()
         {
-            AhAuctions = await _context.AhAuctions
-                .Include(a => a.ObjectNavigation)
-                .Include(a => a.PaymentMethodNavigation)
-                .Include(a => a.ShipmentTypeNavigation).ToListAsync();
+            AhAuctions = await _auctions.GetAuctions();
         }
     }
 }

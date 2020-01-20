@@ -12,5 +12,6 @@ namespace AuctionHouseCore.Services
         Task<AhObjectToSell> GetObject(Guid? id);
         Task DeleteObject(AhObjectToSell ObjectToSell);
         Task<bool> EditObject(AhObjectToSell ObjectToSell);
+        Task<List<AhObjectToSell>> GetObjects();
     }
 }

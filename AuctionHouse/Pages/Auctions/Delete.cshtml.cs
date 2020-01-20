@@ -6,16 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AuctionHouseCore.Models;
+using AuctionHouseCore.Services;
 
 namespace AuctionHouse.Pages.Auctions
 {
     public class DeleteModel : PageModel
     {
-        private readonly AuctionHouseCore.Models.AuctionHouseContext _context;
+        private IAuctions _auctions;
 
-        public DeleteModel(AuctionHouseCore.Models.AuctionHouseContext context)
+        public DeleteModel()
         {
-            _context = context;
+            _auctions = new AuctionHouseCore.Services.Auctions();
         }
 
         [BindProperty]
@@ -28,11 +29,8 @@ namespace AuctionHouse.Pages.Auctions
                 return NotFound();
             }
 
-            AhAuctions = await _context.AhAuctions
-                .Include(a => a.ObjectNavigation)
-                .Include(a => a.PaymentMethodNavigation)
-                .Include(a => a.ShipmentTypeNavigation).FirstOrDefaultAsync(m => m.Id == id);
-
+            AhAuctions = await _auctions.GetAuctions(id);
+            
             if (AhAuctions == null)
             {
                 return NotFound();
@@ -47,12 +45,11 @@ namespace AuctionHouse.Pages.Auctions
                 return NotFound();
             }
 
-            AhAuctions = await _context.AhAuctions.FindAsync(id);
+            AhAuctions = await _auctions.GetAuctions(id);
 
             if (AhAuctions != null)
             {
-                _context.AhAuctions.Remove(AhAuctions);
-                await _context.SaveChangesAsync();
+                await _auctions.DeleteAuction(AhAuctions);
             }
 
             return RedirectToPage("./Index");

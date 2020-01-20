@@ -70,6 +70,8 @@ namespace AuctionHouseCore.Services
 
         }
 
+        public async Task<List<AhObjectToSell>> GetObjects() =>
+            await _context.AhObjectToSell.Where(x=>x.Sold == false).ToListAsync();
 
 
     }

@@ -10,12 +10,11 @@ namespace AuctionHouse.Pages.ObjectToSell
     public class CreateModel : PageModel
     {
         private readonly IObjects _objectToSell;
-
-        string User;
+        private string user;
 
         public CreateModel(IHttpContextAccessor _httpContextAccessor)
         {
-            User = _httpContextAccessor.HttpContext.User.Identity.Name;
+            user = _httpContextAccessor.HttpContext.User.Identity.Name;
             _objectToSell = new Objects();
         } 
 
@@ -33,7 +32,7 @@ namespace AuctionHouse.Pages.ObjectToSell
             {
                 return Page();
             }
-            await _objectToSell.AddNewObject(AhObjectToSell, User);
+            await _objectToSell.AddNewObject(AhObjectToSell, user);
             return RedirectToPage("../Index");
         }
     }

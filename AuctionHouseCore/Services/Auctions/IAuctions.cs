@@ -11,6 +11,9 @@ namespace AuctionHouseCore.Services
         Task<List<AhPaymentMethod>> GetPaymentMethods();
         Task<List<AhShipmentType>> GetShipmentTypes();
         Task<string> BuyNow(AhAuctions auction);
-
+        Task<AhAuctions> GetAuctions(Guid? id);
+        Task DeleteAuction(AhAuctions auction);
+        Task<IList<AhAuctions>> GetAuctions();
+        Task AcceptAuction(Guid? id);
     }
 }

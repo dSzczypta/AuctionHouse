@@ -28,10 +28,11 @@ namespace AuctionHouseCore.Services
             try
             {
                 var shipmentPrice = _context.AhShipmentType.First(x => x.Id == auction.ShipmentType).Price;
-                var objPrice = _context.AhObjectToSell.First(x => x.Id == auction.ObjectId).Price;
-                var price = objPrice + shipmentPrice;
+                var obj = _context.AhObjectToSell.First(x => x.Id == auction.ObjectId);
+                var price = obj.Price + shipmentPrice;
                 auction.Price = price;
                 auction.Id = guid;
+                obj.Sold = true;
                 _context.AhAuctions.Add(auction);
                 await _context.SaveChangesAsync();
             }
@@ -41,6 +42,31 @@ namespace AuctionHouseCore.Services
             }
 
             return guid.ToString();
+        }
+
+        public async Task<AhAuctions> GetAuctions(Guid? id) =>
+            await _context.AhAuctions
+                .Include(a => a.ObjectNavigation)
+                .Include(a => a.PaymentMethodNavigation)
+                .Include(a => a.ShipmentTypeNavigation).FirstOrDefaultAsync(m => m.Id == id);
+
+        public async Task DeleteAuction(AhAuctions auction)
+        {
+            _context.AhAuctions.Remove(auction);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IList<AhAuctions>> GetAuctions() =>
+            await _context.AhAuctions
+                .Include(a => a.ObjectNavigation)
+                .Include(a => a.PaymentMethodNavigation)
+                .Include(a => a.ShipmentTypeNavigation).ToListAsync();
+
+        public async Task AcceptAuction(Guid? id)
+        {
+            var auction = _context.AhAuctions.First(x => x.Id == id);
+            auction.IsConfirmed = true;
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -16,12 +16,6 @@ namespace AuctionHouseCore.Services
             _context = new AuctionHouseContext();
         }
 
-        public Task<List<AhPaymentMethod>> GetPaymentMethods() =>
-            _context.AhPaymentMethod.ToListAsync();
-
-        public Task<List<AhShipmentType>> GetShipmentTypes() =>
-            _context.AhShipmentType.ToListAsync();
-
         public async Task<string> BuyNow(AhAuctions auction)
         {
             var guid = Guid.NewGuid();
@@ -52,6 +46,10 @@ namespace AuctionHouseCore.Services
 
         public async Task DeleteAuction(AhAuctions auction)
         {
+
+            var objToSell = await _context.AhObjectToSell.FirstAsync(x => x.Id == auction.ObjectId);
+            objToSell.Sold = false;
+
             _context.AhAuctions.Remove(auction);
             await _context.SaveChangesAsync();
         }

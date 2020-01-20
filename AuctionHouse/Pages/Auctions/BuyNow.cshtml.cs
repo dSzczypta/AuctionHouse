@@ -16,12 +16,16 @@ namespace AuctionHouse.Pages.Auctions
 
         private readonly IObjects _objects;
         private IAuctions _auctions;
+        private IShipmentTypeManager _shipmentTypeManager;
+        private IPaymentMethodManager _paymentMethodManager;
         string user;
 
         public BuyNowModel(IHttpContextAccessor _httpContextAccessor)
         {
             _objects = new Objects();
             _auctions = new AuctionHouseCore.Services.Auctions();
+            _shipmentTypeManager = new AuctionHouseCore.Services.ShipmentTypeManager();
+            _paymentMethodManager = new AuctionHouseCore.Services.PaymentMethodManager();
             user = _httpContextAccessor.HttpContext.User.Identity.Name;
         }
 
@@ -45,14 +49,14 @@ namespace AuctionHouse.Pages.Auctions
             }
 
             AhObjectToSell = await _objects.GetObject(id);
-            var PaymentMethod = await _auctions.GetPaymentMethods();
+            var PaymentMethod = await _paymentMethodManager.GetPaymentMethod();
             PaymentMethodList = PaymentMethod.Select(a => new SelectListItem
             {
                 Value = a.Id.ToString(),
                 Text = a.Name
             }).ToList();
 
-            var ShipmentType = await _auctions.GetShipmentTypes();
+            var ShipmentType = await _shipmentTypeManager.GetShipmentType();
 
             ShipmentTypeList = ShipmentType.Select(a => new SelectListItem
             {

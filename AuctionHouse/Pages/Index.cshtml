@@ -74,7 +74,10 @@
                     @Html.DisplayFor(modelItem => item.DateAdded)
                 </td>
                 <td>
-                    <a asp-page="./Auctions/BuyNow" asp-route-id="@item.Id">BayNow</a> |
+                    @if (await AdminPanel.GetTypeOfUser(User.Identity.Name) == "1")
+                    {
+                        <a asp-page="./Auctions/BuyNow" asp-route-id="@item.Id">BayNow</a>
+                    } |
                     <a asp-page="./ObjectToSell/Details" asp-route-id="@item.Id">Details</a> |
                     @if (await AdminPanel.GetTypeOfUser(User.Identity.Name) == "1")
                     {

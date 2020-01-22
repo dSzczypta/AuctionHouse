@@ -87,7 +87,6 @@ namespace AuctionHouseCore.Services
             }
             catch (Exception)
             {
-
                 return "3";
             }
 

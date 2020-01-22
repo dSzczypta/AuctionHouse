@@ -1,0 +1,1 @@
+ALTER TABLE [dbo].[AH_ObjectToSell] ADD ImagePath VARCHAR(400) NULL;
